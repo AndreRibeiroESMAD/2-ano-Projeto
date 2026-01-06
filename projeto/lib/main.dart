@@ -47,7 +47,26 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-       // This trailing comma makes auto-formatting nicer for build methods.
+      body: Padding(
+        padding: EdgeInsetsGeometry.all(12),
+        child: Column(
+          children: [
+            TextField(
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                label: Text("Email"),
+              ),
+            ),
+            TextField(
+              keyboardType: TextInputType.visiblePassword,
+              obscureText: true,
+              decoration: const InputDecoration(
+                label: Text("Password"),
+              ),
+            ),
+          ],
+        )
+      ),
     );
   }
 }
