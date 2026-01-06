@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:projeto/login.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Mainpage());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Mainpage extends StatelessWidget {
+  const Mainpage({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'LOG IN',
+      title: 'MAIN',
       theme: ThemeData(
         
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'LOG IN TESTE'),
+      home: const MyHomePage(title: 'MainPage'),
     );
   }
 }
@@ -47,25 +48,12 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Padding(
-        padding: EdgeInsetsGeometry.all(12),
-        child: Column(
-          children: [
-            TextField(
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                label: Text("Email"),
-              ),
-            ),
-            TextField(
-              keyboardType: TextInputType.visiblePassword,
-              obscureText: true,
-              decoration: const InputDecoration(
-                label: Text("Password"),
-              ),
-            ),
-          ],
-        )
+      body: 
+      ElevatedButton(
+        onPressed: (){
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>login()));
+        },
+        child: Text("return test")
       ),
     );
   }
