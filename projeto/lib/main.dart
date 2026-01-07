@@ -52,6 +52,15 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsetsGeometry.all(12),
         child: Column(
           children: [
+            Image(image: AssetImage("images/LOGO.png"),
+            width: 220,),
+            const Text(
+              "Welcome User",
+              style: TextStyle(
+                fontSize: 25,
+                color: Color(0xFF609EE0)
+                ),
+              ),
             TextField(
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
@@ -65,11 +74,26 @@ class _MyHomePageState extends State<MyHomePage> {
                 label: Text("Password"),
               ),
             ),
-            ElevatedButton(
-              onPressed: (){
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Mainpage()));
-              },
-              child: Text("Log In")
+            Container(
+              width: double.infinity,
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF609EE0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6)
+                    )
+                  ),
+                  onPressed: (){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Mainpage()));
+                  },
+                  child: Text(
+                    "Log In",
+                    style: TextStyle(
+                      color: Color(0xFFFFFFFF),
+                      fontSize: 18,
+                    )
+                  ),
+                ),
             )
           ],
         )
