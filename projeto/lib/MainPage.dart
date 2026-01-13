@@ -49,12 +49,31 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: 
-      ElevatedButton(
-        onPressed: (){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>login()));
-        },
-        child: Text("return test")
-      ),
-    );
+      Padding(
+        padding: EdgeInsetsGeometry.all(12),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+          itemBuilder: (_, index) { return ElevatedButton(
+                onPressed: (){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>login()));
+                },
+                child: Text("return test")
+                );
+              },
+            itemCount: 1,
+            )
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Color(0xFF609EE0),
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "1"),
+              BottomNavigationBarItem(icon: Icon(Icons.search), label: "2"),
+              BottomNavigationBarItem(icon: Icon(Icons.search), label: "3"),
+              BottomNavigationBarItem(icon: Icon(Icons.search), label: "4"),
+              BottomNavigationBarItem(icon: Icon(Icons.search), label: "5"),
+            ],
+            ),
+      );
   }
 }
