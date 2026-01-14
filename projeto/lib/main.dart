@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/MainPage.dart';
+import 'package:projeto/BottomNavBar.dart';
 
 void main() {
   runApp(const login());
@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     )
                   ),
                   onPressed: (){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Mainpage()));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NavBottomBar()));
                   },
                   child: Text(
                     "Log In",

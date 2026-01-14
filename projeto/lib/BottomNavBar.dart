@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/main.dart';
+import 'package:projeto/home.dart';
+import 'package:projeto/profile.dart';
+import 'package:projeto/search.dart';
+import 'package:projeto/add.dart';
+import 'package:projeto/cart.dart';
 
 void main() {
-  runApp(const Mainpage());
+  runApp(const NavBottomBar());
 }
 
-class Mainpage extends StatelessWidget {
-  const Mainpage({super.key});
+class NavBottomBar extends StatelessWidget {
+  const NavBottomBar({super.key});
 
   // This widget is the root of your application.
   @override
@@ -40,20 +45,23 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-void _navitem(_icon){
-  BottomNavigationBarItem(icon:
-  Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(12)
-    ),
-    padding: EdgeInsets.all(6),
-    child: Icon(_icon, color: Colors.white,),
-  ),
-  label: "",);
-}
-
 class _MyHomePageState extends State<MyHomePage> {
+  int _selectedindex = 0;
+
+  void _navbottombar(int index){
+    setState(() {
+      _selectedindex = index;
+    });
+  }
+
+  final List<Widget> Pages = [
+    home(),
+    search(),
+    addItems(),
+    Cart(),
+    Profilepage()
+  ];
+
   BottomNavigationBarItem _navitem(
     IconData icon,)
     { return BottomNavigationBarItem(
@@ -74,39 +82,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      body: Pages[_selectedindex],
+      bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Color(0xFF609EE0),
-        title: Text(widget.title),
-      ),
-      body: 
-      Padding(
-        padding: EdgeInsetsGeometry.all(12),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemBuilder: (_, index) { return ElevatedButton(
-                onPressed: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>login()));
-                },
-                child: Text("return test")
-                );
-              },
-            itemCount: 1,
-            )
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Color(0xFF609EE0),
-            type: BottomNavigationBarType.fixed,
-            iconSize: 40,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            items: [
-              _navitem(Icons.home),
-              _navitem(Icons.search),
-              _navitem(Icons.add),
-              _navitem(Icons.shopping_cart),
-              _navitem(Icons.person),
-            ],
-            ),
+        type: BottomNavigationBarType.fixed,
+        iconSize: 40,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        onTap: _navbottombar,
+        items: [
+          _navitem(Icons.home),
+          _navitem(Icons.search),
+          _navitem(Icons.add),
+          _navitem(Icons.shopping_cart),
+          _navitem(Icons.person),
+        ],
+        ),
       );
   }
 }
