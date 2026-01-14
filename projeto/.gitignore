@@ -35,6 +35,8 @@ migrate_working_dir/
 /linux/flutter
 /macos/Flutter
 /windows/flutter
+/API/node_modules
+/API/package-lock.json
 
 # Symbolication related
 app.*.symbols
