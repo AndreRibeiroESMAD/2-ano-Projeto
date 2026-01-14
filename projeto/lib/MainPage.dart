@@ -40,12 +40,42 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+void _navitem(_icon){
+  BottomNavigationBarItem(icon:
+  Container(
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12)
+    ),
+    padding: EdgeInsets.all(6),
+    child: Icon(_icon, color: Colors.white,),
+  ),
+  label: "",);
+}
+
 class _MyHomePageState extends State<MyHomePage> {
+  BottomNavigationBarItem _navitem(
+    IconData icon,)
+    { return BottomNavigationBarItem(
+      label: '',
+      icon: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(
+          icon,
+          color:Color(0xFF609EE0),
+        ),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Color(0xFF609EE0),
         title: Text(widget.title),
       ),
       body: 
@@ -66,12 +96,15 @@ class _MyHomePageState extends State<MyHomePage> {
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: Color(0xFF609EE0),
             type: BottomNavigationBarType.fixed,
+            iconSize: 40,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
             items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: "1"),
-              BottomNavigationBarItem(icon: Icon(Icons.search), label: "2"),
-              BottomNavigationBarItem(icon: Icon(Icons.search), label: "3"),
-              BottomNavigationBarItem(icon: Icon(Icons.search), label: "4"),
-              BottomNavigationBarItem(icon: Icon(Icons.search), label: "5"),
+              _navitem(Icons.home),
+              _navitem(Icons.search),
+              _navitem(Icons.add),
+              _navitem(Icons.shopping_cart),
+              _navitem(Icons.person),
             ],
             ),
       );
