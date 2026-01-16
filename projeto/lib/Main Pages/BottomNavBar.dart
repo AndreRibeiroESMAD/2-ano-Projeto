@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/main.dart';
-import 'package:projeto/home.dart';
-import 'package:projeto/profile.dart';
-import 'package:projeto/search.dart';
-import 'package:projeto/add.dart';
-import 'package:projeto/cart.dart';
+import 'package:projeto/Main%20Pages/home.dart';
+import 'package:projeto/Main%20Pages/profile.dart';
+import 'package:projeto/Main%20Pages/search.dart';
+import 'package:projeto/Main%20Pages/add.dart';
+import 'package:projeto/Main%20Pages/cart.dart';
 
 void main() {
   runApp(const NavBottomBar());

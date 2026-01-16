@@ -48,7 +48,12 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Color(0xFF609EE0),
         title: Text(widget.title),
       ),
-      body: Text("profile"),
+      body: ElevatedButton(
+            onPressed: (){
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>login()));
+            },
+            child: Text("return test")
+            ),
     );
   }
 }
