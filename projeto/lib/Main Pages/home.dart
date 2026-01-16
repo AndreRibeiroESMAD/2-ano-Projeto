@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/main.dart';
+import 'package:projeto/other Pages/itemprofile.dart';
 
 void main() {
   runApp(const home());
