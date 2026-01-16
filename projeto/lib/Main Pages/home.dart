@@ -61,7 +61,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     preco,
                     style: TextStyle(
                       fontSize: 24,
-                      color: Color(0xFF609EE0)
+                      color: Color(0xFF609EE0),
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 )
@@ -93,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 0.78
+            childAspectRatio: 0.75
           ),
           itemBuilder: (_, index) { return
             _itempreview('images/test.jpg', index.toString(), index.toString()+"€");
