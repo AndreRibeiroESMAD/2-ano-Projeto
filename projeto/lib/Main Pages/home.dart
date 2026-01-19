@@ -97,9 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisCount: 2,
             childAspectRatio: 0.75
           ),
-          itemBuilder: (_, index) { return
-            _itempreview('images/test.jpg', index.toString(), index.toString()+"€");
-          },
+          itemBuilder: (_, index) { return _itempreview('images/test.jpg', index.toString(), index.toString()+"€");},
             itemCount: 8,
           ),
         ),
