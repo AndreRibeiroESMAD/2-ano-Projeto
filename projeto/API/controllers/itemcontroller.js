@@ -2,6 +2,8 @@ const { validationResult } = require('express-validator');
 const Item = require('../models/item');
 
 
+
+//POST para adicionar items
 const add = async (req, res) => {
 
     try{
@@ -26,6 +28,7 @@ const add = async (req, res) => {
    
 }
 
+//GET de todos os items
 const get = async (req, res) => {
     try {
         const items = await Item.find();
@@ -36,7 +39,25 @@ const get = async (req, res) => {
     }
 }
 
+//GET de item por ID
+const getitem = async (req, res) => {
+    try {
+        const itemId = req.params.id;
+        const item = await Item.findById(itemId);
+
+        if (!item) {
+            return res.status(404).json({ message: 'Item não encontrado' });
+        }else {
+            res.json({ item });
+        }
+    } catch (error) {
+
+    }
+}
+
+
 module.exports = {
   add,
-  get
+  get,
+  getitem
 };

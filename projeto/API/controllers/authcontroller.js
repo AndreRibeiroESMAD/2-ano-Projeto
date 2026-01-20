@@ -31,6 +31,7 @@ const register = async (req, res) => {
     );
 
     res.status(201).json({ token });
+    localStorage.setItem('token', token);
   } catch (error) {
     res.status(500).json({ message: 'Erro no servidor', error: error.message });
   }
@@ -65,6 +66,7 @@ const login = async (req, res) => {
     );
 
     res.json({ token });
+    localStorage.setItem('token', token);
   } catch (error) {
     res.status(500).json({ message: 'Erro no servidor', error: error.message });
   }
