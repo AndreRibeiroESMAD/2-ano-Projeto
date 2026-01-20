@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const authRoutes = require('./routes/authroute');
+const itemRoutes = require('./routes/itemroute');
 //const userRoutes = require('./routes/user');
 const connectDB = require('./config/database');
 const { connectMQTT } = require('./config/mqtt');
@@ -24,5 +25,7 @@ const start = async () => {
     console.log(`Servidor a correr na porta ${PORT}`);
   });
 };
+
+app.use('/api/items', itemRoutes);
 
 start();
