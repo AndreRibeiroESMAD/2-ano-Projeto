@@ -44,42 +44,41 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Container _itempreview (imagem, nome, preco){
     return Container(
-            child: Column(
-              children: [
-                Image(image: AssetImage(imagem)),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    nome,
-                    style: TextStyle(
-                      fontSize: 13
-                    ),
-                  ),
+        child: Column(
+          children: [
+            Image(image: AssetImage(imagem)),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                nome,
+                style: TextStyle(
+                  fontSize: 13
                 ),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    preco,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Color(0xFF609EE0),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )
-                
-              ],
+              ),
             ),
-            margin: EdgeInsets.all(4),
-            padding: EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: Color(0xFF609EE0),
-                                width: 3,
-                                ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                preco,
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Color(0xFF609EE0),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             )
-            );
+          ],
+        ),
+        margin: EdgeInsets.all(4),
+        padding: EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: Color(0xFF609EE0),
+                            width: 3,
+                            ),
+        ),
+      );
   }
 
   @override
@@ -91,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body:
       Padding(
-        padding: EdgeInsetsGeometry.all(4),
+        padding: EdgeInsets.all(4),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,

@@ -5,6 +5,7 @@ import 'package:projeto/Main%20Pages/profile.dart';
 import 'package:projeto/Main%20Pages/search.dart';
 import 'package:projeto/Main%20Pages/add.dart';
 import 'package:projeto/Main%20Pages/cart.dart';
+import 'package:projeto/other Pages/itemprofile.dart';
 
 void main() {
   runApp(const NavBottomBar());
@@ -55,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   final List<Widget> Pages = [
-    home(),
+    itempage(),
     search(),
     addItems(),
     Cart(),

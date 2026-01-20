@@ -48,7 +48,108 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Color(0xFF609EE0),
         title: Text(widget.title),
       ),
-      body: Text("Im the item page")
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Builder(builder: (context) {
+                final screenWidth = MediaQuery.of(context).size.width;
+                double imageWidth = screenWidth * 0.33; // cerca de 1/3 da largura
+                if (imageWidth > 380) imageWidth = 380; // tamanho máximo aproximado
+                final imageHeight = imageWidth * 270 / 380; // mantem proporção ~380x270
+
+                return Center(
+                  child: Container(
+                    width: imageWidth,
+                    height: imageHeight,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.grey[300],
+                      image: const DecorationImage(
+                        image: NetworkImage('https://via.placeholder.com/380x270'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+
+              const SizedBox(height: 16),
+
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text('Texto preto', style: TextStyle(fontSize: 20, color: Colors.black)),
+                        SizedBox(height: 4),
+                        Text('Texto azul', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF609EE0))),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage('https://via.placeholder.com/80'),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(Icons.star, color: Colors.yellow),
+                          SizedBox(width: 4),
+                          Text('NaN', style: TextStyle(fontSize: 15)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF609EE0),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: const Text('Botão 1', style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.red, width: 3),
+                        foregroundColor: Colors.red,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        backgroundColor: Colors.transparent,
+                      ),
+                      child: const Text('Botão 2', style: TextStyle(color: Colors.red)),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

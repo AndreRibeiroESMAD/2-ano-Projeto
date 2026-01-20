@@ -41,6 +41,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Widget _statItem(String title, String value) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(title, style: const TextStyle(fontSize: 16, color: Colors.black54)),
+        const SizedBox(height: 6),
+        Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+      ],
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,12 +58,64 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Color(0xFF609EE0),
         title: Text(widget.title),
       ),
-      body: ElevatedButton(
-            onPressed: (){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>login()));
-            },
-            child: Text("return test")
-            ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 12),
+              Builder(builder: (context) {
+                final screenWidth = MediaQuery.of(context).size.width;
+                double diameter = screenWidth * 0.5;
+                if (diameter > 300) diameter = 300; // limite visual
+
+                return Center(
+                  child: Container(
+                    width: diameter,
+                    height: diameter,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey[300],
+                      image: const DecorationImage(
+                        image: NetworkImage('https://via.placeholder.com/400'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+
+              const SizedBox(height: 12),
+              const Text('Nome do Usuário', style: TextStyle(fontSize: 25)),
+              const SizedBox(height: 12),
+              const Divider(color: Colors.grey),
+              const SizedBox(height: 12),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _statItem('Vendas', 'NaN'),
+                  _statItem('Compras', 'NaN'),
+                  _statItem('Posts', 'NaN'),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _statItem('Reviews', 'NaN'),
+                  _statItem('Rating', 'NaN'),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
