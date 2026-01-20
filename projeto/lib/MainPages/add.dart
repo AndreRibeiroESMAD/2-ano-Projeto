@@ -44,11 +44,73 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF609EE0),
-        title: Text(widget.title),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 60, left: 12, right: 12, bottom: 12), 
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () {},
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Colors.blueGrey, width: 3),
+                  foregroundColor: Colors.blueGrey,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6)
+                  )
+                ),
+                child: Text('Adicionar imagem', 
+                  style: TextStyle(color: Colors.blueGrey)
+                  ),
+              ),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                hintText: "Nome",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                hintText: "Preço",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              keyboardType: TextInputType.multiline,
+              maxLines: 10,
+              decoration: const InputDecoration(
+                hintText: "Descrição",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            Expanded(child: Container()),
+            Container(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF609EE0),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6)
+                  )
+                ),
+                child: Text('Submeter',
+                  style: TextStyle(color: Colors.white)
+                  ),
+              ),
+            )
+          ],
+        ),
       ),
-      body: Text("add"),
     );
   }
 }
