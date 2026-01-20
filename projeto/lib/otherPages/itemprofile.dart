@@ -12,12 +12,12 @@ class itempage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MAIN',
+      title: 'profile item',
       theme: ThemeData(
         
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'MainPage'),
+      home: const MyHomePage(title: 'Página item'),
     );
   }
 }
@@ -50,15 +50,14 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Builder(builder: (context) {
                 final screenWidth = MediaQuery.of(context).size.width;
-                double imageWidth = screenWidth * 0.33; // cerca de 1/3 da largura
-                if (imageWidth > 380) imageWidth = 380; // tamanho máximo aproximado
-                final imageHeight = imageWidth * 270 / 380; // mantem proporção ~380x270
+                double imageWidth = screenWidth;
+                final imageHeight = imageWidth*0.6;
 
                 return Center(
                   child: Container(
@@ -94,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   const SizedBox(width: 12),
 
-                  Column(
+                  Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const CircleAvatar(
@@ -125,8 +124,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF609EE0),
                         padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6)
+                        )
                       ),
-                      child: const Text('Botão 1', style: TextStyle(color: Colors.white)),
+                      
+                      child: const Text('Adicionar', style: TextStyle(color: Colors.white)),
                     ),
                   ),
 
@@ -140,8 +143,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         foregroundColor: Colors.red,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         backgroundColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6)
+                        )
                       ),
-                      child: const Text('Botão 2', style: TextStyle(color: Colors.red)),
+                      child: const Text('Reportar', style: TextStyle(color: Colors.red)),
                     ),
                   ),
                 ],

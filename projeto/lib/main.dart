@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/Main%20Pages/BottomNavBar.dart';
+import 'package:projeto/MainPages/BottomNavBar.dart';
 
 void main() {
   runApp(const login());

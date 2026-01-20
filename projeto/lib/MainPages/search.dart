@@ -44,11 +44,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF609EE0),
-        title: Text(widget.title),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 60, left: 12, right: 12),
+        child: Column(
+          children: [
+            TextField(
+              keyboardType: TextInputType.visiblePassword,
+              decoration: const InputDecoration(
+                hintText: "search",
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
+            SizedBox(height: 10),
+            Divider(color: Colors.grey),
+          ],
+        ),
       ),
-      body: Text("searc"),
     );
   }
 }

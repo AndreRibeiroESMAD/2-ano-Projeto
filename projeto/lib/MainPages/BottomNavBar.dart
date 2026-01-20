@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/main.dart';
-import 'package:projeto/Main%20Pages/home.dart';
-import 'package:projeto/Main%20Pages/profile.dart';
-import 'package:projeto/Main%20Pages/search.dart';
-import 'package:projeto/Main%20Pages/add.dart';
-import 'package:projeto/Main%20Pages/cart.dart';
-import 'package:projeto/other Pages/itemprofile.dart';
+import 'package:projeto/MainPages/home.dart';
+import 'package:projeto/MainPages/profile.dart';
+import 'package:projeto/MainPages/search.dart';
+import 'package:projeto/MainPages/add.dart';
+import 'package:projeto/MainPages/cart.dart';
+import 'package:projeto/otherPages/itemprofile.dart';
 
 void main() {
   runApp(const NavBottomBar());
@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   final List<Widget> Pages = [
-    itempage(),
+    home(),
     search(),
     addItems(),
     Cart(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/main.dart';
-import 'package:projeto/other Pages/itemprofile.dart';
+import 'package:projeto/otherPages/itemprofile.dart';
 
 void main() {
   runApp(const home());
@@ -42,8 +41,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Container _itempreview (imagem, nome, preco){
-    return Container(
+  Widget _itempreview (imagem, nome, preco){
+    return GestureDetector(
+    onTap: () {
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>itempage()));
+    },
+    child: Container(
         child: Column(
           children: [
             Image(image: AssetImage(imagem)),
@@ -78,7 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             width: 3,
                             ),
         ),
-      );
+      ),
+    );
   }
 
   @override
@@ -97,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
             childAspectRatio: 0.75
           ),
           itemBuilder: (_, index) { return _itempreview('images/test.jpg', index.toString(), index.toString()+"€");},
-            itemCount: 8,
+            itemCount: 6,
           ),
         ),
       );

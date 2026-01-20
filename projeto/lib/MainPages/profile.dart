@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Builder(builder: (context) {
                 final screenWidth = MediaQuery.of(context).size.width;
                 double diameter = screenWidth * 0.5;
-                if (diameter > 300) diameter = 300; // limite visual
+                if (diameter > 300) diameter = 300;
 
                 return Center(
                   child: Container(
