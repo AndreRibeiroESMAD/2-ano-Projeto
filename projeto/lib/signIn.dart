@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/MainPages/BottomNavBar.dart';
-import 'package:projeto/signIn.dart';
+import 'package:projeto/main.dart';
 
 void main() {
-  runApp(const login());
+  runApp(const Signin());
 }
 
-class login extends StatelessWidget {
-  const login({super.key});
+class Signin extends StatelessWidget {
+  const Signin({super.key});
 
   // This widget is the root of your application.
   @override
@@ -69,6 +68,14 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 10),
              TextField(
               keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                hintText: "Username",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 10),
+             TextField(
+              keyboardType: TextInputType.text,
               obscureText: true,
               decoration: const InputDecoration(
                 hintText: "Password",
@@ -86,10 +93,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ),
                 onPressed: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NavBottomBar()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>login()));
                 },
                 child: Text(
-                  "Log In",
+                  "Sign In",
                   style: TextStyle(
                     color: Color(0xFFFFFFFF),
                     fontSize: 18,
@@ -98,26 +105,27 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
-                Text("Don't have an account?"),
-                Text("Forgot your password?"),
-              ],
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-                child:  GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Signin()));
-                },
-                child: Text(
-                  "Sign in!",
-                  style: TextStyle(
-                    color: Color(0xFF609EE0),
-                  ),
+                Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Already have an account?"),
                 ),
-              ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>login()));
+                    },
+                    child: Text(
+                      "Log in!",
+                      style: TextStyle(
+                        color: Color(0xFF609EE0),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
           ],
         )

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/main.dart';
 
 void main() {
   runApp(const Cart());
@@ -44,11 +43,46 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF609EE0),
-        title: Text(widget.title),
+      body: Padding(
+        padding: const EdgeInsets.only(top:60, left: 12, right: 12, bottom: 12),
+        child: Column(
+          children: [
+            Expanded(child: Container()),
+            SizedBox(height: 4),
+            Divider(color: Colors.grey),
+            SizedBox(height: 4),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text('NaN'+"€",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF609EE0)
+                  ),
+                ),
+              ),
+            SizedBox(height: 4),
+            Divider(color: Colors.grey),
+            SizedBox(height: 4),
+            Container(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF609EE0),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6)
+                  )
+                ),
+                child: Text('Check out',
+                  style: TextStyle(color: Colors.white)
+                  ),
+              ),
+            )
+          ],
+        ),
       ),
-      body: Text("cart"),
     );
   }
 }

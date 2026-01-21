@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/main.dart';
 
 void main() {
   runApp(const search());
@@ -45,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 60, left: 12, right: 12),
+        padding: const EdgeInsets.only(top: 80, left: 12, right: 12),
         child: Column(
           children: [
             TextField(

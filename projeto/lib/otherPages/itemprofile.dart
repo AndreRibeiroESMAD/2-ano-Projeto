@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/main.dart';
 
 void main() {
   runApp(const itempage());
@@ -17,7 +16,7 @@ class itempage extends StatelessWidget {
         
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Página item'),
+      home: const MyHomePage(title: ''),
     );
   }
 }
@@ -47,6 +46,18 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Color(0xFF609EE0),
         title: Text(widget.title),
+        toolbarHeight: 80,
+        actions: [
+          Align(
+            alignment: Alignment.bottomRight,
+            child: IconButton(
+              icon: Icon(Icons.notifications, color: Colors.white),
+              iconSize: 35,
+              onPressed: () {
+              },
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

@@ -14,10 +14,9 @@ class home extends StatelessWidget {
     return MaterialApp(
       title: 'MAIN',
       theme: ThemeData(
-        
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'MainPage'),
+      home: const MyHomePage(title: '')
     );
   }
 }
@@ -91,6 +90,18 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Color(0xFF609EE0),
         title: Text(widget.title),
+        toolbarHeight: 80,
+        actions: [
+          Align(
+            alignment: Alignment.bottomRight,
+            child: IconButton(
+              icon: Icon(Icons.notifications, color: Colors.white),
+              iconSize: 35,
+              onPressed: () {
+              },
+            ),
+          )
+        ],
       ),
       body:
       Padding(
@@ -98,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 0.75
+            childAspectRatio: 0.78
           ),
           itemBuilder: (_, index) { return _itempreview('images/test.jpg', index.toString(), index.toString()+"€");},
             itemCount: 6,

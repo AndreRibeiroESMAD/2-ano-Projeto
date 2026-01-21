@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/main.dart';
 
 void main() {
   runApp(const Profilepage());
@@ -17,7 +16,7 @@ class Profilepage extends StatelessWidget {
         
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'MainPage'),
+      home: const MyHomePage(title: ''),
     );
   }
 }
@@ -54,17 +53,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF609EE0),
-        title: Text(widget.title),
-      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.only(top: 80, left: 12, right: 12, bottom: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 12),
               Builder(builder: (context) {
                 final screenWidth = MediaQuery.of(context).size.width;
                 double diameter = screenWidth * 0.5;
