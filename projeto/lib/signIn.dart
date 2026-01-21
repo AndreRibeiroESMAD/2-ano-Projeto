@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/main.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const Signin());
@@ -41,6 +43,74 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // Create controllers for each text field
+  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  // Register function that calls the API
+  Future<void> registerUser() async {
+    String email = emailController.text;
+    String username = usernameController.text;
+    String password = passwordController.text;
+
+    // Validate fields
+    if (email.isEmpty || username.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("All fields are required")),
+      );
+      return;
+    }
+
+    try {
+      // Make API call to register
+      final response = await http.post(
+        Uri.parse('http://localhost:3000/api/auth/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+          'username': username,
+          'password': password,
+        }),
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        // Registration successful
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Registration successful!")),
+        );
+        
+        // Navigate to login page (main.dart)
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => login()),
+        );
+      } else {
+        // Registration failed
+        final errorData = jsonDecode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Registration failed: ${errorData['message']}")),
+        );
+      }
+    } catch (error) {
+      // Connection error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${error.toString()}")),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    // Clean up controllers
+    emailController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Image(image: AssetImage("images/LOGO.png"),
             width: 220,),
             const Text(
-              "Welcome User",
+              "Welcome New User",
               style: TextStyle(
                 fontSize: 25,
                 color: Color(0xFF609EE0)
@@ -59,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             SizedBox(height: 20),
              TextField(
+              controller: emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 hintText: "Email",
@@ -67,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(height: 10),
              TextField(
+              controller: usernameController,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 hintText: "Username",
@@ -75,6 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(height: 10),
              TextField(
+              controller: passwordController,
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: const InputDecoration(
@@ -93,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ),
                 onPressed: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>login()));
+                  registerUser();
                 },
                 child: Text(
                   "Sign In",
