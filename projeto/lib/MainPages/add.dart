@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: const EdgeInsets.only(top: 80, left: 12, right: 12, bottom: 12), 
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () {},
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Expanded(child: Container()),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {},

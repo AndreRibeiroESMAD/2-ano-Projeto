@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 35),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

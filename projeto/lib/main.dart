@@ -3,6 +3,7 @@ import 'package:projeto/MainPages/BottomNavBar.dart';
 import 'package:projeto/signIn.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const login());
@@ -79,6 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
         final data = jsonDecode(response.body);
         final token = data['token'];
         
+        // Save token to local storage
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('auth_token', token);
+        
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Login successful!")),
         );
@@ -147,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 35),
-            Container(
+            SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(

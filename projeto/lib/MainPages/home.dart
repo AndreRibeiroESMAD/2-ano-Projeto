@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/otherPages/itemprofile.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const home());
@@ -40,12 +42,57 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Widget _itempreview (imagem, nome, preco){
+  // Variables to store items data
+  List<dynamic> items = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getItems(); // Fetch items when page loads
+  }
+
+  // Function to get all items from API
+  Future<void> getItems() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://localhost:3000/api/items/get'),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          items = data['items'];
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        isLoading = false;
+      });
+      print("Error fetching items: $error");
+    }
+  }
+
+  Widget _itempreview (String itemId, String imagem, String nome, String preco){
     return GestureDetector(
     onTap: () {
       Navigator.push(context, MaterialPageRoute(builder: (context)=>itempage()));
     },
     child: Container(
+        margin: EdgeInsets.all(4),
+        padding: EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: Color(0xFF609EE0),
+                            width: 3,
+                            ),
+        ),
         child: Column(
           children: [
             Image(image: AssetImage(imagem)),
@@ -71,15 +118,6 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
         ),
-        margin: EdgeInsets.all(4),
-        padding: EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(4),
-          border: Border.all(color: Color(0xFF609EE0),
-                            width: 3,
-                            ),
-        ),
       ),
     );
   }
@@ -104,17 +142,29 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body:
-      Padding(
-        padding: EdgeInsets.all(4),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.78
-          ),
-          itemBuilder: (_, index) { return _itempreview('images/test.jpg', index.toString(), index.toString()+"€");},
-            itemCount: 6,
-          ),
-        ),
+      isLoading
+        ? Center(child: CircularProgressIndicator())
+        : items.isEmpty
+          ? Center(child: Text("No items found"))
+          : Padding(
+              padding: EdgeInsets.all(4),
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.78
+                ),
+                itemBuilder: (_, index) {
+                  final item = items[index];
+                  return _itempreview(
+                    item['_id'] ?? '',
+                    'images/test.jpg',
+                    item['name'] ?? 'No name',
+                    "${item['price'] ?? 0}€"
+                  );
+                },
+                itemCount: items.length,
+              ),
+            ),
       );
   }
 }

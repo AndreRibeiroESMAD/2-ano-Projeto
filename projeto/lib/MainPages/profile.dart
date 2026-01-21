@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:projeto/main.dart';
 
 void main() {
   runApp(const Profilepage());
@@ -40,6 +44,62 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // Variables to store user data
+  String username = 'Loading...';
+  String email = 'Loading...';
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData(); // Fetch data when page loads
+  }
+
+  // Function to get user data from API
+  Future<void> getUserData() async {
+    try {
+      // Get token from SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('auth_token');
+
+      if (token == null) {
+        // Redirect to login page if no token found
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => login()),
+        );
+        return;
+      }
+
+      // Call API with token
+      final response = await http.get(
+        Uri.parse('http://localhost:3000/api/users/getuser'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          username = data['user']['username'] ?? 'No username';
+          email = data['user']['email'] ?? 'No email';
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          username = 'Error loading user';
+          isLoading = false;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        username = 'Error: ${error.toString()}';
+        isLoading = false;
+      });
+    }
+  }
+
   Widget _statItem(String title, String value) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -50,6 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +142,15 @@ class _MyHomePageState extends State<MyHomePage> {
               }),
 
               const SizedBox(height: 12),
-              const Text('Nome do Usuário', style: TextStyle(fontSize: 25)),
+              Text(
+                isLoading ? 'Loading...' : username,
+                style: const TextStyle(fontSize: 25)
+              ),
+              const SizedBox(height: 6),
+              Text(
+                email,
+                style: const TextStyle(fontSize: 16, color: Colors.grey)
+              ),
               const SizedBox(height: 12),
               const Divider(color: Colors.grey),
               const SizedBox(height: 12),
