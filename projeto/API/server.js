@@ -9,12 +9,14 @@ const { connectMQTT } = require('./config/mqtt');
 
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
 
+// Registrar todas as rotas ANTES de iniciar o servidor
+app.use('/api/auth', authRoutes);
+app.use('/api/items', itemRoutes);
+app.use('/api/users', userRoutes);
 
 const PORT = process.env.PORT || 3000;
-
-app.use('/api/auth', authRoutes);
 
 // Iniciar servidor
 const start = async () => {
@@ -25,9 +27,5 @@ const start = async () => {
     console.log(`Servidor a correr na porta ${PORT}`);
   });
 };
-
-app.use('/api/items', itemRoutes);
-
-app.use('/api/users', userRoutes);
 
 start();
