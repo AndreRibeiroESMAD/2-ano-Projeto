@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/MainPages/BottomNavBar.dart';
 import 'package:projeto/signIn.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const login());
@@ -42,6 +44,73 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // Create controllers for each text field
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  // Login function that calls the API
+  Future<void> loginUser() async {
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    // Validate fields
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("All fields are required")),
+      );
+      return;
+    }
+
+    try {
+      // Make API call to login
+      final response = await http.post(
+        Uri.parse('http://localhost:3000/api/auth/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+          'password': password,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Login successful
+        final data = jsonDecode(response.body);
+        final token = data['token'];
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Login successful!")),
+        );
+        
+        // Navigate to home page
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => NavBottomBar()),
+        );
+      } else {
+        // Login failed
+        final errorData = jsonDecode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Login failed: ${errorData['message']}")),
+        );
+      }
+    } catch (error) {
+      // Connection error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${error.toString()}")),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    // Clean up controllers
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             SizedBox(height: 20),
              TextField(
+              controller: emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 hintText: "Email",
@@ -68,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(height: 10),
              TextField(
+              controller: passwordController,
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: const InputDecoration(
@@ -86,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ),
                 onPressed: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>NavBottomBar()));
+                  loginUser();
                 },
                 child: Text(
                   "Log In",
