@@ -44,9 +44,51 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top:60, left: 12, right: 12, bottom: 12),
+        padding: EdgeInsets.only(top:60, left: 12, right: 12, bottom: 12),
         child: Column(
           children: [
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(color: Color(0xFF609EE0),
+                  width: 3
+                ),
+                borderRadius: BorderRadius.circular(6)
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    child: Image(image: AssetImage("images/test.jpg",
+                    ),
+                    width: 100),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text('Item Name',
+                            style: TextStyle(
+                              fontSize: 20
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text('NaN'+"€",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xFF609EE0),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  )
+                ],
+              )
+            ),
             Expanded(child: Container()),
             SizedBox(height: 4),
             Divider(color: Colors.grey),
@@ -70,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF609EE0),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6)
                   )
