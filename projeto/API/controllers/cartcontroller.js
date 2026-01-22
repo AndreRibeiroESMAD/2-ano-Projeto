@@ -9,20 +9,29 @@ const addtocart = async (req, res) => {
         
         // Extrai o itemId do corpo da requisição
         const itemId = req.body.itemId;
+        const quantity = req.body.quantity || 1;
         
         // Procura um carrinho existente para este userId
         let cart = await Cart.findOne({ userId: userId });
         
         if (cart) {
-            // Se o carrinho já existe, adiciona o novo item ao array items
-            cart.items.push({ itemId: itemId });
+            // Verifica se o item já existe no carrinho
+            const existingItem = cart.items.find(item => item.itemId.toString() === itemId);
+            
+            if (existingItem) {
+                // Se existe, incrementa a quantidade
+                existingItem.quantity += quantity;
+            } else {
+                // Se não existe, adiciona novo item
+                cart.items.push({ itemId: itemId, quantity: quantity });
+            }
             await cart.save();
             res.json({ cart: cart });
         } else {
             // Se não existe carrinho, cria um novo com o primeiro item
             cart = new Cart({
                 userId: userId,
-                items: [{ itemId: itemId }]
+                items: [{ itemId: itemId, quantity: quantity }]
             });
             await cart.save();
             res.json({ cart: cart });
@@ -51,7 +60,50 @@ const deleteitem = async (req, res) => {
     }
 }
 
+// GET para obter o carrinho do usuário
+const getcart = async (req, res) => {
+    try {
+        // Extrai o userId do token (middleware de autenticação)
+        const userId = req.userId;
+        
+        // Procura o carrinho do usuário e popula os items com os dados completos
+        const cart = await Cart.findOne({ userId: userId }).populate('items.itemId');
+        
+        if (!cart) {
+            return res.status(404).json({ message: 'Carrinho não encontrado' });
+        }
+        
+        res.json({ cart: cart });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar carrinho' });
+    }
+}
+
+// DELETE para remover um item específico do carrinho
+const removeItemFromCart = async (req, res) => {
+    try {
+        const userId = req.userId;
+        const itemId = req.params.itemId;
+        
+        const cart = await Cart.findOne({ userId: userId });
+        
+        if (!cart) {
+            return res.status(404).json({ message: 'Carrinho não encontrado' });
+        }
+        
+        // Remove o item do array de items
+        cart.items = cart.items.filter(item => item.itemId.toString() !== itemId);
+        await cart.save();
+        
+        res.json({ message: 'Item removido do carrinho', cart: cart });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao remover item' });
+    }
+}
+
 module.exports = {
     addtocart,
-    deleteitem
+    deleteitem,
+    getcart,
+    removeItemFromCart
 };

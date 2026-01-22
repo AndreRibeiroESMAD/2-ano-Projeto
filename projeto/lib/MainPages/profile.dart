@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         setState(() {
-          username = data['user']['username'] ?? 'No username';
+          username = data['user']['name'] ?? 'No name';
           email = data['user']['email'] ?? 'No email';
           isLoading = false;
         });

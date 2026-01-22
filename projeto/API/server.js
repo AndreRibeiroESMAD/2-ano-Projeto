@@ -4,6 +4,7 @@ const express = require('express');
 const authRoutes = require('./routes/authroute');
 const itemRoutes = require('./routes/itemroute');
 const userRoutes = require('./routes/userroutes');
+const cartRoutes = require('./routes/cartroute');
 const connectDB = require('./config/database');
 const { connectMQTT } = require('./config/mqtt');
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/cart', cartRoutes);
 
 const PORT = process.env.PORT || 3000;
 

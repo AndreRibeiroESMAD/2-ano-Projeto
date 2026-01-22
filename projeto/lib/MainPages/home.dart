@@ -81,7 +81,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _itempreview (String itemId, String imagem, String nome, String preco){
     return GestureDetector(
     onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>itempage()));
+      Navigator.push(
+        context, 
+        MaterialPageRoute(
+          builder: (context) => itempage(itemId: itemId)
+        )
+      );
     },
     child: Container(
         margin: EdgeInsets.all(4),

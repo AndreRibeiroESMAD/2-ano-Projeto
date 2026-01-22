@@ -1,51 +1,122 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const itempage());
+  runApp(const itempage(itemId: ''));
 }
 
-class itempage extends StatelessWidget {
-  const itempage({super.key});
+class itempage extends StatefulWidget {
+  final String itemId;
+  
+  const itempage({super.key, required this.itemId});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'profile item',
-      theme: ThemeData(
-        
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: ''),
-    );
+  State<itempage> createState() => _itempageState();
+}
+
+class _itempageState extends State<itempage> {
+  // Variables to store item data
+  String itemName = 'Loading...';
+  String itemPrice = '';
+  String itemDescription = '';
+  bool isLoading = true;
+  bool isAddingToCart = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getItemDetails(); // Fetch item details when page loads
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  // Function to get specific item from API
+  Future<void> getItemDetails() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://localhost:3000/api/items/get/${widget.itemId}'),
+      );
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          itemName = data['item']['name'] ?? 'No name';
+          itemPrice = "${data['item']['price'] ?? 0}€";
+          itemDescription = data['item']['description'] ?? 'No description';
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          itemName = 'Error loading item';
+          isLoading = false;
+        });
+      }
+    } catch (error) {
+      setState(() {
+        itemName = 'Error: ${error.toString()}';
+        isLoading = false;
+      });
+    }
+  }
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  // Function to add item to cart
+  Future<void> addToCart() async {
+    setState(() {
+      isAddingToCart = true;
+    });
 
-  final String title;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('auth_token');
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+      if (token == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Please login first")),
+        );
+        setState(() {
+          isAddingToCart = false;
+        });
+        return;
+      }
 
-class _MyHomePageState extends State<MyHomePage> {
+      final response = await http.post(
+        Uri.parse('http://localhost:3000/api/cart/add'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'itemId': widget.itemId,
+          'quantity': 1,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Added to cart!")),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to add to cart")),
+        );
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: ${error.toString()}")),
+      );
+    } finally {
+      setState(() {
+        isAddingToCart = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF609EE0),
-        title: Text(widget.title),
+        title: Text(isLoading ? 'Loading...' : itemName),
         toolbarHeight: 80,
         actions: [
           Align(
@@ -59,48 +130,50 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Builder(builder: (context) {
-                final screenWidth = MediaQuery.of(context).size.width;
-                double imageWidth = screenWidth;
-                final imageHeight = imageWidth*0.6;
-
-                return Center(
-                  child: Container(
-                    width: imageWidth,
-                    height: imageHeight,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.grey[300],
-                      image: const DecorationImage(
-                        image: NetworkImage('https://via.placeholder.com/380x270'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                );
-              }),
-
-              const SizedBox(height: 16),
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+      body: isLoading
+        ? Center(child: CircularProgressIndicator())
+        : SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text('Texto preto', style: TextStyle(fontSize: 20, color: Colors.black)),
-                        SizedBox(height: 4),
-                        Text('Texto azul', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF609EE0))),
-                      ],
-                    ),
-                  ),
+                  Builder(builder: (context) {
+                    final screenWidth = MediaQuery.of(context).size.width;
+                    double imageWidth = screenWidth;
+                    final imageHeight = imageWidth*0.6;
+
+                    return Center(
+                      child: Container(
+                        width: imageWidth,
+                        height: imageHeight,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey[300],
+                          image: const DecorationImage(
+                            image: NetworkImage('https://via.placeholder.com/380x270'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+
+                  const SizedBox(height: 16),
+
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(itemName, style: TextStyle(fontSize: 20, color: Colors.black)),
+                            SizedBox(height: 4),
+                            Text(itemPrice, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF609EE0))),
+                          ],
+                        ),
+                      ),
 
                   const SizedBox(width: 12),
 
@@ -131,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: isAddingToCart ? null : addToCart,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF609EE0),
                         padding: const EdgeInsets.symmetric(vertical: 12),
@@ -140,7 +213,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         )
                       ),
                       
-                      child: const Text('Adicionar', style: TextStyle(color: Colors.white)),
+                      child: isAddingToCart
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text('Adicionar', style: TextStyle(color: Colors.white)),
                     ),
                   ),
 
@@ -162,6 +244,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ],
+              ),
+
+              const SizedBox(height: 20),
+
+              // Description section
+              Text(
+                'Description:',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                itemDescription,
+                style: TextStyle(fontSize: 16),
               ),
             ],
           ),

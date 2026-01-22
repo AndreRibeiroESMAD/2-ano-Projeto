@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         body: jsonEncode(<String, String>{
           'email': email,
-          'username': username,
+          'name': username,
           'password': password,
         }),
       );
