@@ -6,74 +6,80 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(const login());
+  runApp(MyApp());
 }
 
-class login extends StatelessWidget {
-  const login({super.key});
-
-  // This widget is the root of your application.
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'LOG IN PAGE',
+      title: 'My App',
       theme: ThemeData(
-        
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'LOG IN'),
+      home: AuthWrapper(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class AuthWrapper extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _AuthWrapperState createState() => _AuthWrapperState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  // Create controllers for each text field
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  bool isCheckingToken = true;
+class _AuthWrapperState extends State<AuthWrapper> {
+  bool isLoggedIn = false;
+  bool isChecking = true;
 
   @override
   void initState() {
     super.initState();
-    checkForToken();
+    checkAuth();
   }
 
-  // Check if token exists and auto-login
-  Future<void> checkForToken() async {
+  Future<void> checkAuth() async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('auth_token');
-
-    if (token != null) {
-      // Token exists, navigate to main page
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => NavBottomBar()),
-      );
-    } else {
-      // No token, show login page
-      setState(() {
-        isCheckingToken = false;
-      });
-    }
+    setState(() {
+      isLoggedIn = token != null;
+      isChecking = false;
+    });
   }
+
+  void login() {
+    setState(() {
+      isLoggedIn = true;
+    });
+  }
+
+  void logout() {
+    setState(() {
+      isLoggedIn = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (isChecking) {
+      return Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    return isLoggedIn ? NavBottomBar(onLogout: logout) : LoginPage(onLogin: login);
+  }
+}
+
+class LoginPage extends StatefulWidget {
+  final VoidCallback onLogin;
+
+  const LoginPage({required this.onLogin});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  // Create controllers for each text field
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   // Login function that calls the API
   Future<void> loginUser() async {
@@ -114,11 +120,8 @@ class _MyHomePageState extends State<MyHomePage> {
           SnackBar(content: Text("Login successful!")),
         );
         
-        // Navigate to home page
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => NavBottomBar()),
-        );
+        // Notify parent to switch to main app
+        widget.onLogin();
       } else {
         // Login failed
         final errorData = jsonDecode(response.body);
@@ -144,18 +147,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Show loading while checking token
-    if (isCheckingToken) {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
     return Scaffold(
       body: Padding(
-        padding: EdgeInsetsGeometry.only(top: 80, left: 12, right: 12, bottom: 12),
+        padding: EdgeInsets.only(top: 80, left: 12, right: 12, bottom: 12),
         child: Column(
           children: [
             Image(image: AssetImage("images/LOGO.png"),
@@ -220,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.topLeft,
                 child:  GestureDetector(
                 onTap: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Signin()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Signin()));
                 },
                 child: Text(
                   "Sign in!",

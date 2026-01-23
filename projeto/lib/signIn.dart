@@ -1,48 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-void main() {
-  runApp(const Signin());
-}
-
-class Signin extends StatelessWidget {
+class Signin extends StatefulWidget {
   const Signin({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'LOG IN PAGE',
-      theme: ThemeData(
-        
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'LOG IN'),
-    );
-  }
+  State<Signin> createState() => _SigninState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _SigninState extends State<Signin> {
   // Create controllers for each text field
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
@@ -82,11 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
           SnackBar(content: Text("Registration successful!")),
         );
         
-        // Navigate to login page (main.dart)
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => login()),
-        );
+        // Navigate back to login page
+        Navigator.pop(context);
       } else {
         // Registration failed
         try {
@@ -130,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsetsGeometry.only(top: 80, left: 12, right: 12, bottom: 12),
+        padding: EdgeInsets.only(top: 80, left: 12, right: 12, bottom: 12),
         child: Column(
           children: [
             Image(image: AssetImage("images/LOGO.png"),
@@ -203,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   alignment: Alignment.topLeft,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>login()));
+                      Navigator.pop(context);
                     },
                     child: Text(
                       "Log in!",

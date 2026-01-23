@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // Redirect to login if no token
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => login()),
+          MaterialPageRoute(builder: (context) => MyApp()),
         );
         return;
       }
