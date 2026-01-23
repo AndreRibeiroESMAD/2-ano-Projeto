@@ -229,6 +229,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           final item = cartItems[index];
                           final itemData = item['itemId'];
                           
+                          // Skip if itemData is null (deleted item)
+                          if (itemData == null) {
+                            return SizedBox.shrink();
+                          }
+                          
                           return Container(
                             margin: EdgeInsets.only(bottom: 12),
                             decoration: BoxDecoration(
