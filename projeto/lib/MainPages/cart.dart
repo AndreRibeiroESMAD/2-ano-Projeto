@@ -86,9 +86,12 @@ class _MyHomePageState extends State<MyHomePage> {
           // Calculate total price
           totalPrice = 0.0;
           for (var item in cartItems) {
-            double price = (item['itemId']['price'] ?? 0).toDouble();
-            int quantity = item['quantity'] ?? 1;
-            totalPrice += (price * quantity);
+            // Skip if itemId is null (deleted item)
+            if (item['itemId'] != null) {
+              double price = (item['itemId']['price'] ?? 0).toDouble();
+              int quantity = item['quantity'] ?? 1;
+              totalPrice += (price * quantity);
+            }
           }
           isLoading = false;
         });
