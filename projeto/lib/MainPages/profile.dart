@@ -308,9 +308,10 @@ class _MyHomePageState extends State<MyHomePage> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
     
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => login()),
+      (Route<dynamic> route) => false,
     );
   }
 
