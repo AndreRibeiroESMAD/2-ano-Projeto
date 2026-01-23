@@ -48,6 +48,32 @@ class _MyHomePageState extends State<MyHomePage> {
   // Create controllers for each text field
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool isCheckingToken = true;
+
+  @override
+  void initState() {
+    super.initState();
+    checkForToken();
+  }
+
+  // Check if token exists and auto-login
+  Future<void> checkForToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_token');
+
+    if (token != null) {
+      // Token exists, navigate to main page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => NavBottomBar()),
+      );
+    } else {
+      // No token, show login page
+      setState(() {
+        isCheckingToken = false;
+      });
+    }
+  }
 
   // Login function that calls the API
   Future<void> loginUser() async {
@@ -118,6 +144,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Show loading while checking token
+    if (isCheckingToken) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsetsGeometry.only(top: 80, left: 12, right: 12, bottom: 12),
