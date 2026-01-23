@@ -89,10 +89,25 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       } else {
         // Registration failed
-        final errorData = jsonDecode(response.body);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Registration failed: ${errorData['message']}")),
-        );
+        try {
+          final errorData = jsonDecode(response.body);
+          String errorMessage = 'Unknown error';
+          
+          if (errorData['message'] != null) {
+            errorMessage = errorData['message'];
+          } else if (errorData['errors'] != null && errorData['errors'].isNotEmpty) {
+            // Handle validation errors
+            errorMessage = errorData['errors'][0]['msg'] ?? errorData['errors'][0]['message'] ?? 'Validation error';
+          }
+          
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Registration failed: $errorMessage")),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Registration failed: Status ${response.statusCode}")),
+          );
+        }
       }
     } catch (error) {
       // Connection error
