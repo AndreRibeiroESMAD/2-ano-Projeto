@@ -68,8 +68,15 @@ class _MyHomePageState extends State<MyHomePage> {
       final prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('auth_token');
 
-      if (token == null) return;
+      if (token == null) {
+        print('No token found');
+        setState(() {
+          isLoadingItems = false;
+        });
+        return;
+      }
 
+      print('Loading user items...');
       final response = await http.get(
         Uri.parse('http://10.0.2.2:3000/api/items/myitems'),
         headers: {
@@ -77,18 +84,24 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       );
 
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         setState(() {
           userItems = data['items'];
           isLoadingItems = false;
         });
+        print('Loaded ${userItems.length} items');
       } else {
+        print('Failed to load items: ${response.statusCode}');
         setState(() {
           isLoadingItems = false;
         });
       }
     } catch (error) {
+      print('Error loading items: $error');
       setState(() {
         isLoadingItems = false;
       });
