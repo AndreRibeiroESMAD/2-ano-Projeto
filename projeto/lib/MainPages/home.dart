@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> getItems() async {
     try {
       final response = await http.get(
-        Uri.parse('http://localhost:3000/api/items/get'),
+        Uri.parse('http://10.0.2.2:3000/api/items/get'),
       );
 
       if (response.statusCode == 200) {

@@ -59,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> loadUserItems() async {
     try {
       final response = await http.get(
-        Uri.parse('http://localhost:3000/api/items/get'),
+        Uri.parse('http://10.0.2.2:3000/api/items/get'),
       );
 
       if (response.statusCode == 200) {
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:3000/api/items/add'),
+        Uri.parse('http://10.0.2.2:3000/api/items/add'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -147,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     try {
       final response = await http.put(
-        Uri.parse('http://localhost:3000/api/items/edit/$itemId'),
+        Uri.parse('http://10.0.2.2:3000/api/items/edit/$itemId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -188,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> deleteItem(String itemId) async {
     try {
       final response = await http.delete(
-        Uri.parse('http://localhost:3000/api/items/delete/$itemId'),
+        Uri.parse('http://10.0.2.2:3000/api/items/delete/$itemId'),
       );
 
       if (response.statusCode == 200) {

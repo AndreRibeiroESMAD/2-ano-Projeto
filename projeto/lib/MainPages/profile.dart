@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       // Call API with token
       final response = await http.get(
-        Uri.parse('http://localhost:3000/api/users/getuser'),
+        Uri.parse('http://10.0.2.2:3000/api/users/getuser'),
         headers: {
           'Authorization': 'Bearer $token',
         },

@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       // Call API with token
       final response = await http.get(
-        Uri.parse('http://localhost:3000/api/cart/get'),
+        Uri.parse('http://10.0.2.2:3000/api/cart/get'),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -121,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (token == null) return;
 
       final response = await http.delete(
-        Uri.parse('http://localhost:3000/api/cart/remove/$itemId'),
+        Uri.parse('http://10.0.2.2:3000/api/cart/remove/$itemId'),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -177,7 +177,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       // Delete the entire cart after checkout
       final response = await http.delete(
-        Uri.parse('http://localhost:3000/api/cart/delete'),
+        Uri.parse('http://10.0.2.2:3000/api/cart/delete'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

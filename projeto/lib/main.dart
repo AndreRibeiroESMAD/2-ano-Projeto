@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       // Make API call to login
       final response = await http.post(
-        Uri.parse('http://localhost:3000/api/auth/login'),
+        Uri.parse('http://10.0.2.2:3000/api/auth/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

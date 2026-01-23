@@ -34,7 +34,7 @@ class _itempageState extends State<itempage> {
   Future<void> getItemDetails() async {
     try {
       final response = await http.get(
-        Uri.parse('http://localhost:3000/api/items/get/${widget.itemId}'),
+        Uri.parse('http://10.0.2.2:3000/api/items/get/${widget.itemId}'),
       );
 
       if (response.statusCode == 200) {
@@ -80,7 +80,7 @@ class _itempageState extends State<itempage> {
       }
 
       final response = await http.post(
-        Uri.parse('http://localhost:3000/api/cart/add'),
+        Uri.parse('http://10.0.2.2:3000/api/cart/add'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
